@@ -98,6 +98,18 @@ prepare_extra_common() {
     popd
     popd
 
+    # VAPOURSYNTH
+    pushd ${SOURCE_DIR}
+    git clone -b R61 --depth=1 https://github.com/vapoursynth/vapoursynth.git
+    pushd vapoursynth
+    ./autogen.sh
+    ./configure --prefix=${TARGET_DIR} ${CROSS_OPT}
+    make -j $(nproc) && make install && make install DESTDIR=${SOURCE_DIR}/vapoursynth
+    echo "vapoursynth${TARGET_DIR}/lib/libvapoursynth.so* usr/lib/jellyfin-ffmpeg/lib" >> ${DPKG_INSTALL_LIST}
+    echo "vapoursynth${TARGET_DIR}/lib/libvapoursynth-script.so* usr/lib/jellyfin-ffmpeg/lib" >> ${DPKG_INSTALL_LIST}
+    popd
+    popd
+
     # ZIMG
     pushd ${SOURCE_DIR}
     git clone --recursive --depth=1 https://github.com/sekrit-twc/zimg.git
