@@ -80,6 +80,24 @@ prepare_extra_common() {
     popd
     popd
 
+    # AVISYNTH
+    pushd ${SOURCE_DIR}
+    git clone --depth=1 https://github.com/AviSynth/AviSynthPlus.git
+    pushd avisynth
+    mkdir build 
+    pushd build
+    cmake \
+        ${CMAKE_TOOLCHAIN_OPT} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=${TARGET_DIR} \
+        -DHEADERS_ONLY=ON \
+        ..
+    make -j$(nproc)
+    make VersionGen install
+    popd
+    popd
+    popd
+
     # ZIMG
     pushd ${SOURCE_DIR}
     git clone --recursive --depth=1 https://github.com/sekrit-twc/zimg.git

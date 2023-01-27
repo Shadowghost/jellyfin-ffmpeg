@@ -158,6 +158,17 @@ echo "Cflags.private: -DCHROMAPRINT_NODLL" >> ${FF_DEPS_PREFIX}/lib/pkgconfig/li
 popd
 popd
 
+# AVISYNTH
+git clone --depth=1 https://github.com/AviSynth/AviSynthPlus.git
+pushd avisynth
+mkdir build 
+pushd build
+cmake -DCMAKE_TOOLCHAIN_FILE="$FFBUILD_CMAKE_TOOLCHAIN" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$FFBUILD_PREFIX" -DHEADERS_ONLY=ON ..
+make -j$(nproc)
+make VersionGen install
+popd
+popd
+
 # LZMA
 git clone -b v5.4.1 --depth=1 https://github.com/xz-mirror/xz.git
 pushd xz
@@ -610,7 +621,8 @@ fi
     --enable-cuda-llvm \
     --enable-cuvid \
     --enable-nvdec \
-    --enable-nvenc
+    --enable-nvenc \
+    --enable-avisynth
 make -j$(nproc)
 make install
 popd
