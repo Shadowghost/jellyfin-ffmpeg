@@ -161,6 +161,30 @@ prepare_extra_common() {
     echo "fdk-aac-stripped${TARGET_DIR}/lib/libfdk-aac.so* usr/lib/jellyfin-ffmpeg/lib" >> ${DPKG_INSTALL_LIST}
     popd
     popd
+
+    # LIBVMAF
+    pushd ${SOURCE_DIR}
+    git clone --recursive --depth=1 https://github.com/Netflix/vmaf.git
+    pushd vmaf
+    meson setup libvmaf vmaf_build \
+        ${MESON_CROSS_OPT} \
+        --prefix=${TARGET_DIR} \
+        --libdir=lib \
+        --buildtype=release \
+		--default-library=shared \
+        -Dbuilt_in_models=true \
+        -Denable_avx512=true \
+        -Denable_cuda=false \
+        -Denable_docs=false \
+        -Denable_float=true \
+        -Denable_nvtx=false \
+        -Denable_tests=false
+    meson configure vmaf_build
+    ninja -C vmaf_build install
+    cp ${TARGET_DIR}/lib/libvmaf.so* ${SOURCE_DIR}/vmaf
+    echo "vmaf/libvmaf.so* usr/lib/jellyfin-ffmpeg/lib" >> ${DPKG_INSTALL_LIST}
+    popd
+    popd
 }
 
 # Prepare extra headers, libs and drivers for x86_64-linux-gnu

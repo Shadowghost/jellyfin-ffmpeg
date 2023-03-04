@@ -43,6 +43,7 @@ CONFIG := --prefix=${TARGET_DIR} \
 	--enable-libfdk-aac \
 	--enable-avisynth \
 	--enable-vapoursynth \
+	--enable-libvmaf \
 
 CONFIG_ARM_COMMON := --toolchain=hardened \
 	--enable-cross-compile \
