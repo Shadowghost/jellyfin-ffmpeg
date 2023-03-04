@@ -41,8 +41,8 @@ CONFIG := --prefix=${TARGET_DIR} \
 	--enable-libzvbi \
 	--enable-libzimg \
 	--enable-libfdk-aac \
-    --enable-avisynth \
-    --enable-vapoursynth \
+	--enable-avisynth \
+	--enable-vapoursynth \
 
 CONFIG_ARM_COMMON := --toolchain=hardened \
 	--enable-cross-compile \
